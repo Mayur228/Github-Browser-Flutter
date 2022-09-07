@@ -15,7 +15,7 @@ class SearchedRepositoryBloc
         super(PendingState()) {
     on<GetBranchEvent>(
       (event, emit) async {
-        final Resource<BranchEntity> branchResource =
+        final Resource<List<BranchEntity>> branchResource =
             await branchUseCase(event.htmlUrl);
 
         final branchResult = branchResource.when(

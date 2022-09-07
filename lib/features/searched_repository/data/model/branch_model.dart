@@ -1,6 +1,7 @@
 import 'package:github_browser/features/searched_repository/domain/entities/branch_entity.dart';
 
 class BranchModel extends BranchEntity {
+  // BranchModel({required List<BranchEntity> list}): super(list);
   BranchModel({required String name}): super(name);
 
   factory BranchModel.fromJson(Map<String, dynamic> json) {

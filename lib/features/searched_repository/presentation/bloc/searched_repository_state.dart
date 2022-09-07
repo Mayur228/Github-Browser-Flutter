@@ -13,7 +13,7 @@ class ErrorState extends SearchedRepositoryState {
 }
 
 class LoadedState extends SearchedRepositoryState {
-  final BranchEntity branchEntity;
+  final List<BranchEntity> branchEntity;
 
   LoadedState(this.branchEntity);
 }

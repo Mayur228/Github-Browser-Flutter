@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/features/searched_repository/data/repository/branch_repository.dart';
+import 'package:github_browser/features/searched_repository/domain/entities/branch_entity.dart';
 import 'package:github_browser/features/searched_repository/domain/entities/searched_repo_entity.dart';
 import 'package:github_browser/features/searched_repository/domain/usecase/get_branch.dart';
 import 'package:github_browser/features/searched_repository/presentation/bloc/bloc.dart';
+import 'package:github_browser/features/searched_repository/presentation/widgets/list_widget.dart';
+
+import '../../data/model/branch_model.dart';
 
 class SearchedRepositoryPage extends StatelessWidget {
   final SearchedRepoEntity searchedRepoEntity;
@@ -47,7 +51,8 @@ class SearchedRepositoryPage extends StatelessWidget {
           } else if (state is ErrorState) {
             return Container();
           } else if (state is LoadedState) {
-            print(state);
+            // print(state.branchEntity.first.name);
+           return ListWidget(list: state.branchEntity);
           }
           return Container();
         },

@@ -7,7 +7,7 @@ class GetBranchUseCase {
 
   GetBranchUseCase(this.repository);
 
- Future<Resource<BranchEntity>> call(String htmlUrl) {
+ Future<Resource<List<BranchEntity>>> call(String htmlUrl) {
    return repository.getBranch(htmlUrl);
  }
 
