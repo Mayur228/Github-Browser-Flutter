@@ -22,7 +22,7 @@ class BranchRepositoryImpl implements BranchRepository {
       for(var data in data) {
         list.add(BranchModel.fromJson(data));
       }
-      print(list.first.name);
+      // print(list.first.name);
       // List<BranchModel> list = data.map((element) {
       //   return BranchModel.fromJson(element);
       // }).toList();

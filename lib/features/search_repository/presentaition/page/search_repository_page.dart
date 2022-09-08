@@ -31,37 +31,7 @@ class SearchRepositoryPage extends StatelessWidget {
 
     return BlocProvider(
       create: (_) => bloc,
-      child: BlocBuilder<SearchRepositoryBloc, SearchRepositoryState>(
-        builder: (context, state) {
-          if (state is PendingState) {
-            return SearchRepositoryWidget(
-              onSearch: (value) {
-                List<String> searchParam = value as List<String>;
-                if (searchParam.isNotEmpty) {
-                  bloc.searchRepository(searchParam.first, searchParam.last);
-                }
-              },
-            );
-          } else if (state is ErrorState) {
-            return _buildError();
-          } else if (state is LoadedState) {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SearchedRepositoryPage(
-                  searchedRepoEntity:
-                      SearchedRepoEntity(state.repositoryData.name, state.repositoryData.name, state.repositoryData.url),
-                ),
-              ),
-            );
-           // return SearchedRepositoryPage(
-           //         searchedRepoEntity:
-           //             SearchedRepoEntity(state.repositoryData.name, state.repositoryData.name, ""),
-           //       );
-          }
-          return Container();
-        },
-      ),
+      child: blocConsumer(bloc),
     );
   }
 
@@ -74,6 +44,87 @@ class SearchRepositoryPage extends StatelessWidget {
   Widget _buildError() {
     return const Center(
       child: Text("Error in loading data"),
+    );
+  }
+
+/*  BlocBuilder<SearchRepositoryBloc, SearchRepositoryState> blocBuilder(
+      SearchRepositoryBloc bloc) {
+    return BlocBuilder<SearchRepositoryBloc, SearchRepositoryState>(
+      builder: (context, state) {
+        if (state is PendingState) {
+          return SearchRepositoryWidget(
+            onSearch: (value) {
+              List<String> searchParam = value as List<String>;
+              if (searchParam.isNotEmpty) {
+                bloc.searchRepository(searchParam.first, searchParam.last);
+              }
+            },
+          );
+        } else if (state is ErrorState) {
+          return _buildError();
+        } else if (state is LoadedState) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchedRepositoryPage(
+                searchedRepoEntity: SearchedRepoEntity(
+                    state.repositoryData.name,
+                    state.repositoryData.name,
+                    state.repositoryData.url),
+              ),
+            ),
+          );
+        }
+        return Container();
+      },
+    );
+  }*/
+
+  BlocConsumer<SearchRepositoryBloc, SearchRepositoryState> blocConsumer(
+      SearchRepositoryBloc bloc) {
+    return BlocConsumer(
+      builder: (context, state) {
+        return SearchRepositoryWidget(
+          onSearch: (value) {
+            List<String> searchParam = value as List<String>;
+            if (searchParam.isNotEmpty) {
+              bloc.searchRepository(searchParam.first, searchParam.last);
+            }
+          },
+        );
+      },
+      listener: (context, state) {
+        /*if (state is PendingState) {
+          _buildAllPending();
+        } else if (state is ErrorState) {
+           _buildError();
+        } else if (state is LoadedState) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchedRepositoryPage(
+                searchedRepoEntity: SearchedRepoEntity(
+                    state.repositoryData.name,
+                    state.repositoryData.name,
+                    state.repositoryData.url),
+              ),
+            ),
+          );
+        }*/
+        if(state is LoadedState) {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => SearchedRepositoryPage(
+                searchedRepoEntity: SearchedRepoEntity(
+                    state.repositoryData.name,
+                    state.repositoryData.name,
+                    state.repositoryData.url),
+              ),
+            ),
+          );
+        }
+      },
     );
   }
 }

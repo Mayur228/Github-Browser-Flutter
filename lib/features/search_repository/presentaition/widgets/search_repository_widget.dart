@@ -7,8 +7,10 @@ class SearchRepositoryWidget extends StatelessWidget {
   // final ValueChanged repositoryName;
   final ValueChanged onSearch;
 
+  final Function(String owner, String repoName)? onSearch2;
+
   SearchRepositoryWidget(
-      {Key? key, required this.onSearch})
+      {Key? key, required this.onSearch, this.onSearch2})
       : super(key: key);
 
   TextEditingController ownerTextController = TextEditingController();
@@ -39,6 +41,7 @@ class SearchRepositoryWidget extends StatelessWidget {
                 final List<String> searchParam;
                 searchParam = [ownerTextController.text,repositoryTextController.text];
                 onSearch(searchParam);
+                onSearch2?.call("", "");
               }
             },
           )
