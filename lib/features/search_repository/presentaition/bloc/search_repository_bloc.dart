@@ -11,27 +11,34 @@ class SearchRepositoryBloc
 
   SearchRepositoryBloc(SearchRepositoryUseCase repositoryUseCase)
       : searchRepositoryUseCase = repositoryUseCase,
-        super(PendingState()){
+        super(PendingState()) {
     on<GetRepositoryEvent>((event, emit) async {
-     final Resource<RepositoryEntity> repositoryResource = await searchRepositoryUseCase(event.ownerName,event.repositoryName);
+      final Resource repositoryResource =
+          await searchRepositoryUseCase(event.ownerName, event.repositoryName);
 
-     final repositoryResult = repositoryResource.when(data: (data) {
-       return data;
-     },
-       error: (error) {
-         return error;
-       },
-       pending: () {
-         return null;
-       }
-     );
+      repositoryResource.when(data: (data) {
+        var repoData = data as RepositoryModel;
+        return emit(
+          LoadedState(
+            RepositoryEntity(
+              repoData.name,
+              repoData.url,
+              repoData.html_url,
+              repoData.owner,
+            ),
+          ),
+        );
+      }, error: (error) {
+        return emit(ErrorState(error));
+      }, pending: () {
+        return null;
+      });
 
-     emit(LoadedState(repositoryResult));
-    }
-    );
+      // emit(LoadedState(repositoryResult));
+    });
   }
 
-  searchRepository(String ownerName,String repositoryName) {
+  searchRepository(String ownerName, String repositoryName) {
     add(GetRepositoryEvent(ownerName, repositoryName));
   }
 }

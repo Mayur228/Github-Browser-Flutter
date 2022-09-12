@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:github_browser/core/util/api_source.dart';
 import 'package:github_browser/features/branchscreen/presentation/page/branch_page.dart';
 import 'package:github_browser/features/searched_repository/data/repository/branch_repository.dart';
 import 'package:github_browser/features/searched_repository/domain/entities/branch_entity.dart';
@@ -27,17 +28,23 @@ class SearchedRepositoryPage extends StatelessWidget {
   }
 
   BlocProvider<SearchedRepositoryBloc> provider(BuildContext context) {
-    final bloc = SearchedRepositoryBloc(useCase: GetBranchUseCase(BranchRepositoryImpl()));
+    final bloc = SearchedRepositoryBloc(
+      useCase: GetBranchUseCase(
+        BranchRepositoryImpl(
+          ApiSource(),
+        ),
+      ),
+    );
 
     return BlocProvider(
       create: (_) => bloc,
-      child:blocConsumer(bloc),
+      child: blocConsumer(bloc),
     );
-
   }
 
-  BlocBuilder<SearchedRepositoryBloc, SearchedRepositoryState> blocProvider(SearchedRepositoryBloc bloc) {
-    return BlocBuilder<SearchedRepositoryBloc,SearchedRepositoryState>(
+ /* BlocBuilder<SearchedRepositoryBloc, SearchedRepositoryState> blocProvider(
+      SearchedRepositoryBloc bloc) {
+    return BlocBuilder<SearchedRepositoryBloc, SearchedRepositoryState>(
       builder: (context, state) {
         if (state is PendingState) {
           return Padding(
@@ -58,16 +65,14 @@ class SearchedRepositoryPage extends StatelessWidget {
         } else if (state is ErrorState) {
           return Container();
         } else if (state is LoadedState) {
-          // print(state.branchEntity.first.name);
           return ListWidget(list: state.branchEntity);
         }
         return Container();
       },
     );
+  }*/
 
-  }
-
-  BlocConsumer<SearchedRepositoryBloc,SearchedRepositoryState> blocConsumer(
+  BlocConsumer<SearchedRepositoryBloc, SearchedRepositoryState> blocConsumer(
       SearchedRepositoryBloc bloc) {
     return BlocConsumer(
       builder: (context, state) {
@@ -81,6 +86,9 @@ class SearchedRepositoryPage extends StatelessWidget {
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
             title: Text(searchedRepoEntity.name),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(searchedRepoEntity.owner.avatar),
+            ),
             onTap: () {
               bloc.getBranch(searchedRepoEntity.htmlUrl);
             },
@@ -88,8 +96,7 @@ class SearchedRepositoryPage extends StatelessWidget {
         );
       },
       listener: (context, state) {
-
-        if(state is LoadedState) {
+        if (state is LoadedState) {
           Navigator.push(
             context,
             MaterialPageRoute(
@@ -102,6 +109,4 @@ class SearchedRepositoryPage extends StatelessWidget {
       },
     );
   }
-
 }
-

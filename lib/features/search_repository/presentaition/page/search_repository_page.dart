@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/features/search_repository/data/repository/search_repo_repository.dart';
+import 'package:github_browser/core/util/api_source.dart';
 import 'package:github_browser/features/search_repository/domain/usecase/search_reposirory_usecase.dart';
 import 'package:github_browser/features/search_repository/presentaition/bloc/bloc.dart';
 import 'package:github_browser/features/search_repository/presentaition/widgets/search_repository_widget.dart';
@@ -25,7 +26,7 @@ class SearchRepositoryPage extends StatelessWidget {
   BlocProvider<SearchRepositoryBloc> provider(BuildContext context) {
     final bloc = SearchRepositoryBloc(
       SearchRepositoryUseCase(
-        SearchRepoRepositoryImpl(),
+        SearchRepoRepositoryImpl(ApiSource()),
       ),
     );
 
@@ -41,13 +42,13 @@ class SearchRepositoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildError() {
-    return const Center(
-      child: Text("Error in loading data"),
+  Widget _buildError(String error) {
+    return Center(
+      child: Text(error),
     );
   }
-
-/*  BlocBuilder<SearchRepositoryBloc, SearchRepositoryState> blocBuilder(
+/*
+  BlocBuilder<SearchRepositoryBloc, SearchRepositoryState> blocBuilder(
       SearchRepositoryBloc bloc) {
     return BlocBuilder<SearchRepositoryBloc, SearchRepositoryState>(
       builder: (context, state) {
@@ -61,16 +62,18 @@ class SearchRepositoryPage extends StatelessWidget {
             },
           );
         } else if (state is ErrorState) {
-          return _buildError();
+          return _buildError(state.error.toString());
         } else if (state is LoadedState) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => SearchedRepositoryPage(
                 searchedRepoEntity: SearchedRepoEntity(
-                    state.repositoryData.name,
-                    state.repositoryData.name,
-                    state.repositoryData.url),
+                  state.repositoryData.name,
+                  state.repositoryData.name,
+                  state.repositoryData.url,
+                  state.repositoryData.owner,
+                ),
               ),
             ),
           );
@@ -78,48 +81,47 @@ class SearchRepositoryPage extends StatelessWidget {
         return Container();
       },
     );
-  }*/
+  }
+*/
 
   BlocConsumer<SearchRepositoryBloc, SearchRepositoryState> blocConsumer(
       SearchRepositoryBloc bloc) {
     return BlocConsumer(
       builder: (context, state) {
-        return SearchRepositoryWidget(
-          onSearch: (value) {
-            List<String> searchParam = value as List<String>;
-            if (searchParam.isNotEmpty) {
-              bloc.searchRepository(searchParam.first, searchParam.last);
-            }
-          },
-        );
+        if (state is PendingState) {
+          return SearchRepositoryWidget(
+            onSearch: (value) {
+              List<String> searchParam = value as List<String>;
+              if (searchParam.isNotEmpty) {
+                bloc.searchRepository(searchParam.first, searchParam.last);
+              }
+            },
+          );
+        } else if (state is ErrorState) {
+          return _buildError(state.error.toString());
+        } else {
+          return SearchRepositoryWidget(
+            onSearch: (value) {
+              List<String> searchParam = value as List<String>;
+              if (searchParam.isNotEmpty) {
+                bloc.searchRepository(searchParam.first, searchParam.last);
+              }
+            },
+          );
+        }
       },
       listener: (context, state) {
-        /*if (state is PendingState) {
-          _buildAllPending();
-        } else if (state is ErrorState) {
-           _buildError();
-        } else if (state is LoadedState) {
+        if (state is LoadedState) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => SearchedRepositoryPage(
                 searchedRepoEntity: SearchedRepoEntity(
-                    state.repositoryData.name,
-                    state.repositoryData.name,
-                    state.repositoryData.url),
-              ),
-            ),
-          );
-        }*/
-        if(state is LoadedState) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchedRepositoryPage(
-                searchedRepoEntity: SearchedRepoEntity(
-                    state.repositoryData.name,
-                    state.repositoryData.name,
-                    state.repositoryData.url),
+                  state.repositoryData.name,
+                  state.repositoryData.name,
+                  state.repositoryData.url,
+                  state.repositoryData.owner,
+                ),
               ),
             ),
           );

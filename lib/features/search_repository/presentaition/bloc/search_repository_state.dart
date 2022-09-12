@@ -1,5 +1,4 @@
 
-import 'package:github_browser/core/util/resource.dart';
 import 'package:github_browser/features/search_repository/domain/entities/repository_entity.dart';
 
 abstract class SearchRepositoryState {
@@ -9,7 +8,8 @@ abstract class SearchRepositoryState {
 class PendingState extends SearchRepositoryState {}
 
 class ErrorState extends SearchRepositoryState {
-  ErrorState(error);
+  final dynamic error;
+  ErrorState(this.error);
 }
 
 class LoadedState extends SearchRepositoryState {
