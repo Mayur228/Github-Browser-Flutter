@@ -15,7 +15,9 @@ import '../../features/question_list/data/source/question_list_source.dart'
 import '../../features/question_list/domain/repository/question_list_repository.dart'
     as _i4;
 import '../../features/question_list/domain/usecase/get_question_answer_usecase.dart'
-    as _i6; // ignore_for_file: unnecessary_lambdas
+    as _i6;
+import '../../features/question_list/presentation/state/bloc/question_answer_bloc.dart'
+    as _i7; // ignore_for_file: unnecessary_lambdas
 
 // ignore_for_file: lines_longer_than_80_chars
 /// initializes the registration of provided dependencies inside of [GetIt]
@@ -27,5 +29,7 @@ _i1.GetIt $initGetIt(_i1.GetIt get,
       () => _i5.QuestionListRepositoryImpl(get<_i3.QuestionListSource>()));
   gh.factory<_i6.GetQuestionAnswerUseCase>(
       () => _i6.GetQuestionAnswerUseCase(get<_i4.QuestionListRepository>()));
+  gh.factory<_i7.QuestionAnswerBloc>(
+      () => _i7.QuestionAnswerBloc(get<_i6.GetQuestionAnswerUseCase>()));
   return get;
 }
