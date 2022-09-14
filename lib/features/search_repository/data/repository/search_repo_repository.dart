@@ -4,17 +4,18 @@ import 'package:dio/dio.dart';
 import 'package:github_browser/core/util/resource.dart';
 import 'package:github_browser/features/search_repository/data/model/repository_model.dart';
 import 'package:github_browser/core/util/api_source.dart';
+import 'package:github_browser/features/search_repository/data/source/search_repository_source.dart';
 import 'package:github_browser/features/search_repository/domain/repository/search_repo_repository.dart';
 
 class SearchRepoRepositoryImpl implements SearchRepoRepository {
-  ApiSource apiSource;
+  SearchRepositorySource searchRepositorySource;
 
-  SearchRepoRepositoryImpl(this.apiSource);
+  SearchRepoRepositoryImpl(this.searchRepositorySource);
 
   @override
   Future<Resource> getRepository(
       String ownerName, String repositoryName) async {
-    try {
+    /*try {
       final response = await apiSource.init().get("repos/$ownerName/$repositoryName");
 
       return Future.value(
@@ -37,6 +38,8 @@ class SearchRepoRepositoryImpl implements SearchRepoRepository {
           Resource.error(e.message),
         );
       }
-    }
+    }*/
+
+    return searchRepositorySource.getRepository(ownerName, repositoryName);
   }
 }

@@ -6,10 +6,10 @@ class SearchedRepoEntity {
   final htmlUrl;
   final Owner owner;
 
-  SearchedRepoEntity(
-    this.name,
-    this.repoName,
-    this.htmlUrl,
-    this.owner,
-  );
+  SearchedRepoEntity({
+    required this.name,
+    required this.repoName,
+    required this.htmlUrl,
+    required this.owner,
+  });
 }

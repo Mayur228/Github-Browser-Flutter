@@ -17,3 +17,7 @@ class LoadedState extends SearchedRepositoryState {
 
   LoadedState(this.branchEntity);
 }
+
+class Bookmarked extends SearchedRepositoryState {
+  Bookmarked();
+}

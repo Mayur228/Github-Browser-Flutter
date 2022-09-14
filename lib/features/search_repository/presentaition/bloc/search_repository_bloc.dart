@@ -16,7 +16,7 @@ class SearchRepositoryBloc
       final Resource repositoryResource =
           await searchRepositoryUseCase(event.ownerName, event.repositoryName);
 
-      repositoryResource.when(data: (data) {
+    /*  repositoryResource.when(data: (data) {
         var repoData = data as RepositoryModel;
         return emit(
           LoadedState(
@@ -29,12 +29,14 @@ class SearchRepositoryBloc
           ),
         );
       }, error: (error) {
-        return emit(ErrorState(error));
+        // return emit(ErrorState(error));
+        return null;
       }, pending: () {
         return null;
-      });
+      });*/
 
-      // emit(LoadedState(repositoryResult));
+      repositoryResource.when(data: data, error: error, pending: pending);
+
     });
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/features/search_repository/data/repository/search_repo_repository.dart';
 import 'package:github_browser/core/util/api_source.dart';
+import 'package:github_browser/features/search_repository/data/source/search_repository_source.dart';
 import 'package:github_browser/features/search_repository/domain/usecase/search_reposirory_usecase.dart';
 import 'package:github_browser/features/search_repository/presentaition/bloc/bloc.dart';
 import 'package:github_browser/features/search_repository/presentaition/widgets/search_repository_widget.dart';
@@ -9,7 +10,14 @@ import 'package:github_browser/features/searched_repository/domain/entities/sear
 import 'package:github_browser/features/searched_repository/presentation/page/searched_repository_page.dart';
 
 class SearchRepositoryPage extends StatelessWidget {
-  const SearchRepositoryPage({Key? key}) : super(key: key);
+
+  final SearchRepositoryBloc _bloc;
+
+  SearchRepositoryPage({Key? key}) :  _bloc = SearchRepositoryBloc(
+    SearchRepositoryUseCase(
+      SearchRepoRepositoryImpl(SearchRepositorySource(ApiSource())),
+    ),
+  ), super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -24,12 +32,7 @@ class SearchRepositoryPage extends StatelessWidget {
   }
 
   BlocProvider<SearchRepositoryBloc> provider(BuildContext context) {
-    final bloc = SearchRepositoryBloc(
-      SearchRepositoryUseCase(
-        SearchRepoRepositoryImpl(ApiSource()),
-      ),
-    );
-
+    final bloc = _bloc;
     return BlocProvider(
       create: (_) => bloc,
       child: blocConsumer(bloc),
@@ -47,6 +50,7 @@ class SearchRepositoryPage extends StatelessWidget {
       child: Text(error),
     );
   }
+
 /*
   BlocBuilder<SearchRepositoryBloc, SearchRepositoryState> blocBuilder(
       SearchRepositoryBloc bloc) {
@@ -88,27 +92,14 @@ class SearchRepositoryPage extends StatelessWidget {
       SearchRepositoryBloc bloc) {
     return BlocConsumer(
       builder: (context, state) {
-        if (state is PendingState) {
-          return SearchRepositoryWidget(
-            onSearch: (value) {
-              List<String> searchParam = value as List<String>;
-              if (searchParam.isNotEmpty) {
-                bloc.searchRepository(searchParam.first, searchParam.last);
-              }
-            },
-          );
-        } else if (state is ErrorState) {
-          return _buildError(state.error.toString());
-        } else {
-          return SearchRepositoryWidget(
-            onSearch: (value) {
-              List<String> searchParam = value as List<String>;
-              if (searchParam.isNotEmpty) {
-                bloc.searchRepository(searchParam.first, searchParam.last);
-              }
-            },
-          );
-        }
+        return SearchRepositoryWidget(
+          onSearch: (value) {
+            List<String> searchParam = value as List<String>;
+            if (searchParam.isNotEmpty) {
+              bloc.searchRepository(searchParam.first, searchParam.last);
+            }
+          },
+        );
       },
       listener: (context, state) {
         if (state is LoadedState) {

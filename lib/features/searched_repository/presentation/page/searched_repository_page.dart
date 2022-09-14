@@ -3,25 +3,23 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/core/util/api_source.dart';
 import 'package:github_browser/features/branchscreen/presentation/page/branch_page.dart';
 import 'package:github_browser/features/searched_repository/data/repository/branch_repository.dart';
-import 'package:github_browser/features/searched_repository/domain/entities/branch_entity.dart';
-import 'package:github_browser/features/searched_repository/domain/entities/searched_repo_entity.dart';
+import 'package:github_browser/features/searched_repository/domain/usecase/add_to_bookmark_usecase.dart';
 import 'package:github_browser/features/searched_repository/domain/usecase/get_branch.dart';
 import 'package:github_browser/features/searched_repository/presentation/bloc/bloc.dart';
-import 'package:github_browser/features/branchscreen/presentation/widget/list_widget.dart';
-
-import '../../data/model/branch_model.dart';
 
 class SearchedRepositoryPage extends StatelessWidget {
-  final SearchedRepoEntity searchedRepoEntity;
+  // final SearchedRepoEntity searchedRepoEntity;
+  final String ownerName;
+  final String repoName;
 
-  const SearchedRepositoryPage({Key? key, required this.searchedRepoEntity})
+  const SearchedRepositoryPage({Key? key, required this.ownerName, required this.repoName, })
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(searchedRepoEntity.repoName),
+        title: Text(repoName),
       ),
       body: provider(context),
     );
@@ -29,11 +27,8 @@ class SearchedRepositoryPage extends StatelessWidget {
 
   BlocProvider<SearchedRepositoryBloc> provider(BuildContext context) {
     final bloc = SearchedRepositoryBloc(
-      useCase: GetBranchUseCase(
-        BranchRepositoryImpl(
-          ApiSource(),
-        ),
-      ),
+      useCase: GetBranchUseCase(BranchRepositoryImpl(ApiSource())),
+      addToBookmark: AddToBookmarkUseCase(),
     );
 
     return BlocProvider(
@@ -42,7 +37,7 @@ class SearchedRepositoryPage extends StatelessWidget {
     );
   }
 
- /* BlocBuilder<SearchedRepositoryBloc, SearchedRepositoryState> blocProvider(
+  /* BlocBuilder<SearchedRepositoryBloc, SearchedRepositoryState> blocProvider(
       SearchedRepositoryBloc bloc) {
     return BlocBuilder<SearchedRepositoryBloc, SearchedRepositoryState>(
       builder: (context, state) {
@@ -76,24 +71,14 @@ class SearchedRepositoryPage extends StatelessWidget {
       SearchedRepositoryBloc bloc) {
     return BlocConsumer(
       builder: (context, state) {
-        return Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: ListTile(
-            shape: const RoundedRectangleBorder(
-              side: BorderSide(
-                color: Colors.black,
-              ),
-              borderRadius: BorderRadius.all(Radius.circular(12)),
-            ),
-            title: Text(searchedRepoEntity.name),
-            leading: CircleAvatar(
-              backgroundImage: NetworkImage(searchedRepoEntity.owner.avatar),
-            ),
-            onTap: () {
-              bloc.getBranch(searchedRepoEntity.htmlUrl);
-            },
-          ),
-        );
+        if(state is PendingState) {
+          return userInterFace(bloc,Icons.bookmark_border);
+        }else if (state is Bookmarked) {
+          return userInterFace(bloc, Icons.bookmark);
+        }else {
+          return Container();
+        }
+
       },
       listener: (context, state) {
         if (state is LoadedState) {
@@ -107,6 +92,33 @@ class SearchedRepositoryPage extends StatelessWidget {
           );
         }
       },
+    );
+  }
+
+  userInterFace(SearchedRepositoryBloc bloc, IconData bookmarkIcon,) {
+    return Padding(
+      padding: const EdgeInsets.all(8.0),
+      child: ListTile(
+        shape: const RoundedRectangleBorder(
+          side: BorderSide(
+            color: Colors.black,
+          ),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        title: Text(searchedRepoEntity.name),
+        leading: CircleAvatar(
+          backgroundImage: NetworkImage(searchedRepoEntity.owner.avatar),
+        ),
+        trailing: IconButton(
+          icon: Icon(bookmarkIcon),
+          onPressed: () {
+            bloc.addToBookmark(searchedRepoEntity);
+          },
+        ),
+        onTap: () {
+          bloc.getBranch(searchedRepoEntity.htmlUrl);
+        },
+      ),
     );
   }
 }
