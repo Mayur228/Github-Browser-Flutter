@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/core/di/injection.dart';
 import 'package:github_browser/features/question_list/presentation/state/bloc/bloc.dart';
+import 'package:github_browser/features/question_list/presentation/vo/answer_param.dart';
 import 'package:github_browser/features/question_list/presentation/widget/question_list_item.dart';
 
 import '../../domain/entity/question_answer_entity.dart';
@@ -30,10 +31,10 @@ class QuestionListPage extends StatelessWidget {
           listener: (context, state) {
             if (state is QuestionAnswerLoadedState &&
                 state.navigation != null) {
-              state.navigation?.when(
+                state.navigation?.when(
                 answerQuestion: (answerQuestion) async {
                   try {
-                    String answer = await Navigator.push(
+                    AnswerParam answer = await Navigator.push(
                       context,
                       MaterialPageRoute(
                         builder: (context) => Container(
@@ -59,7 +60,7 @@ class QuestionListPage extends StatelessWidget {
                                     ElevatedButton(
                                       onPressed: () {
                                         Navigator.of(context)
-                                            .pop(textController.text);
+                                            .pop(AnswerParam(answerQuestion.question, textController.text));
                                         textController.text = '';
                                       },
                                       child: const Text("Answer"),
@@ -72,7 +73,8 @@ class QuestionListPage extends StatelessWidget {
                         ),
                       ),
                     );
-                    print("Answer: $answer");
+                     BlocProvider.of<QuestionAnswerBloc>(context).updateQuestionList(answer);
+                    // print("Answer: $answer");
                   } catch (e) {}
                 },
               );

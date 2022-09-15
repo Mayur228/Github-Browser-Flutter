@@ -1,3 +1,4 @@
+
 class QuestionAnswerEntity {
   final String question;
   final String? answer;

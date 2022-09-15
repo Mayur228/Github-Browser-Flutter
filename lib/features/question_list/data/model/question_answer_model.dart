@@ -1,13 +1,16 @@
-import 'package:github_browser/features/question_list/domain/entity/question_answer_entity.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
-class QuestionAnswerModel {
-  final String question;
-  final String? answer;
+import '../../domain/entity/question_answer_entity.dart';
 
-  QuestionAnswerModel({
-    required this.question,
-    this.answer,
-  });
+part 'question_answer_model.freezed.dart';
+
+@freezed
+class QuestionAnswerModel with _$QuestionAnswerModel {
+
+ const factory QuestionAnswerModel({
+    required final String question,
+    final String? answer,
+  }) = _QuestionAnswerModel;
 }
 
 extension QuestionAnswerModelMapper on QuestionAnswerModel {
