@@ -1,32 +1,29 @@
-import 'package:github_browser/features/search_repository/domain/entities/repository_entity.dart';
-
 class RepositoryModel {
   final String name;
   final String url;
   final String html_url;
-  // final Owner owner;
+  final Owner owner;
 
-  RepositoryModel({
-    required String name,
-    required String url,
-    required String html_url,
-    // required Owner owner,
-  })  : name = name,
+  RepositoryModel(
+      {required String name,
+      required String url,
+      required String html_url,
+      required Owner owner})
+      : name = name,
         url = url,
-        html_url = html_url;
-        // owner = owner;
+        html_url = html_url,
+        owner = owner;
 
-  /*factory RepositoryModel.fromJson(Map<String, dynamic> json) {
+  factory RepositoryModel.fromJson(Map<String, dynamic> json) {
     return RepositoryModel(
       name: json['name'],
       url: json['url'],
       html_url: json['html_url'],
-      // owner: Owner.fromJson(json["owner"]),
+      owner: Owner.fromJson(json["owner"]),
     );
-  }*/
+  }
 }
 
-/*
 class Owner {
   final String userName;
   final String avatar;
@@ -44,4 +41,3 @@ class Owner {
     );
   }
 }
-*/

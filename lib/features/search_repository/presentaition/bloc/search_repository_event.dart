@@ -5,9 +5,9 @@ abstract class SearchRepositoryEvent {
 
 }
 
-class GetRepositoryEvent extends SearchRepositoryEvent {
+class NavigateToSearchedEvent extends SearchRepositoryEvent {
   // final Resource<RepositoryEntity> repository;
   final String ownerName;
   final String repositoryName;
-  GetRepositoryEvent(this.ownerName, this.repositoryName);
+  NavigateToSearchedEvent(this.ownerName, this.repositoryName);
 }

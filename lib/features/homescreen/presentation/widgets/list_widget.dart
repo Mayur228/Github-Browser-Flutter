@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:github_browser/features/branchscreen/domain/entity/branch_entity.dart';
+import 'package:github_browser/features/homescreen/domain/entity/home_entity.dart';
 
 class ListWidget extends StatelessWidget {
-  final List<BranchEntity> list;
+  final List<HomeEntity> list;
 
   const ListWidget({Key? key, required this.list}) : super(key: key);
 
@@ -21,10 +21,12 @@ class ListWidget extends StatelessWidget {
               ),
               borderRadius: BorderRadius.all(Radius.circular(12)),
             ),
-            title: Text(list[index].name),
-            onTap: () {
-
-            },
+            title: Text(list[index].userName),
+            leading: CircleAvatar(
+              backgroundImage: NetworkImage(list[index].userAvatar),
+            ),
+            subtitle: Text(list[index].repoName),
+            onTap: () {},
           ),
         );
       },

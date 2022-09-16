@@ -17,3 +17,9 @@ class LoadedState extends SearchRepositoryState {
 
   LoadedState(this.repositoryData);
 }
+
+class SearchingState extends SearchRepositoryState {
+  final List<String> searchParam;
+
+  SearchingState(this.searchParam);
+}

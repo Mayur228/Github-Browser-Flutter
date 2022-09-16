@@ -1,11 +1,7 @@
-import 'dart:convert';
-import 'dart:convert' as convert;
-
 import 'package:github_browser/core/util/api_source.dart';
 import 'package:github_browser/core/util/resource.dart';
-import 'package:github_browser/features/searched_repository/domain/entities/branch_entity.dart';
-import 'package:github_browser/features/searched_repository/domain/repository/branch_repository.dart';
-import 'package:http/http.dart' as http;
+import 'package:github_browser/features/branchscreen/domain/entity/branch_entity.dart';
+import 'package:github_browser/features/branchscreen/domain/repository/branch_repository.dart';
 
 import '../model/branch_model.dart';
 
