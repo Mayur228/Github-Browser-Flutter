@@ -8,6 +8,8 @@ import 'package:github_browser/features/search_repository/presentaition/bloc/blo
 import 'package:github_browser/features/search_repository/presentaition/widgets/search_repository_widget.dart';
 import 'package:github_browser/features/searched_repository/presentation/page/searched_repository_page.dart';
 
+import '../bloc/search_repository_state.dart';
+
 class SearchRepositoryPage extends StatelessWidget {
 
   final SearchRepositoryBloc _bloc;

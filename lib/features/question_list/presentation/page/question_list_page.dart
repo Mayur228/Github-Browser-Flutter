@@ -14,9 +14,10 @@ class QuestionListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final bloc = getIt<QuestionAnswerBloc>();
     return Scaffold(
       body: BlocProvider(
-        create: (context) => getIt<QuestionAnswerBloc>(),
+        create: (context) => bloc,
         child: BlocConsumer<QuestionAnswerBloc, QuestionAnswerState>(
           builder: (context, state) {
             if (state is QuestionAnswerLoadingState) {
@@ -73,7 +74,7 @@ class QuestionListPage extends StatelessWidget {
                         ),
                       ),
                     );
-                     BlocProvider.of<QuestionAnswerBloc>(context).updateQuestionList(answer);
+                    bloc.updateQuestionList(answer);
                     // print("Answer: $answer");
                   } catch (e) {}
                 },
@@ -101,7 +102,9 @@ class QuestionListPage extends StatelessWidget {
       BuildContext context, List<QuestionAnswerEntity> entity) {
     final bloc = BlocProvider.of<QuestionAnswerBloc>(context);
     return ListView.builder(
+      key: ObjectKey(entity),
       itemBuilder: (context, index) => QuestionListItem(
+        key: ObjectKey(entity[index]),
         entity: entity[index],
         answerQuestion: () {
           bloc.answerQuestion(entity[index]);

@@ -12,7 +12,7 @@ abstract class QuestionListSource {
 
 @Singleton(as: QuestionListSource)
 class QuestionListLocalSource implements QuestionListSource {
-  List<QuestionAnswerModel> questions = [
+  final List<QuestionAnswerModel> questions = [
     QuestionAnswerModel(question: "What is your name?"),
     QuestionAnswerModel(question: "What is your favourite color?"),
     QuestionAnswerModel(question: "What is your favourite fruit?"),
@@ -25,15 +25,21 @@ class QuestionListLocalSource implements QuestionListSource {
 
   @override
   Future<List<QuestionAnswerModel>> updateAnswer(AnswerParam param) {
-    List<QuestionAnswerModel> newList = [];
-    for (var element in questions) {
-      if (element.question == param.question) {
-        newList.add(element.copyWith(answer: param.answer));
-      } else {
-        newList.add(element);
+
+    int indexToUpdate = -1;
+    for (int i = 0; i < questions.length; i++) {
+      if (questions[i].question == param.question) {
+        indexToUpdate = i;
+        break;
       }
     }
-    questions = newList;
-    return Future.value(newList);
+
+    if (indexToUpdate >= 0) {
+      questions[indexToUpdate] = QuestionAnswerModel(
+        question: questions[indexToUpdate].question,
+        answer: param.answer,
+      );
+    }
+    return Future.value(questions);
   }
 }
