@@ -4,7 +4,7 @@ import 'package:dio/dio.dart';
 import 'package:github_browser/core/util/api_source.dart';
 
 import '../../../../core/util/resource.dart';
-import '../model/repository_model.dart';
+import '../../../searched_repository/data/model/repository_model.dart';
 
  class SearchRepositorySource {
   final ApiSource apiSource;

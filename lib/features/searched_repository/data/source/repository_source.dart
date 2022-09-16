@@ -1,11 +1,8 @@
 import 'dart:convert';
 
-import 'package:dio/dio.dart';
 import 'package:github_browser/core/util/api_source.dart';
 import 'package:github_browser/features/searched_repository/data/model/repository_model.dart';
-import 'package:github_browser/features/searched_repository/domain/entities/searched_repo_entity.dart';
 
-import '../../../../core/util/resource.dart';
 
 abstract class RepositorySource {
   Future<RepositoryModel> getRepository(
@@ -31,24 +28,5 @@ class RepositorySourceImpl implements RepositorySource {
       ),
     );
 
-    /*try {
-      return Future.value(
-        RepositoryModel.fromJson(
-          json.decode(
-            response.toString(),
-          ),
-        ),
-      );
-    } on DioError catch (e) {
-      if (e.response != null) {
-        return Future.value(
-            e.response?.statusMessage
-        );
-      } else {
-        return Future.value(
-          Resource.error(e.message),
-        );
-      }
-    }
-  }*/
+  }
 }

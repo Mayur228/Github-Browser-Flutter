@@ -1,17 +1,13 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
 import 'package:github_browser/core/util/resource.dart';
-import 'package:github_browser/features/search_repository/data/source/search_repository_source.dart';
 import 'package:github_browser/features/searched_repository/domain/repository/search_repo_repository.dart';
 
 import '../../domain/entities/searched_repo_entity.dart';
 import '../source/repository_source.dart';
 
-class SearchRepoRepositoryImpl implements SearchRepoRepository {
+class SearchedRepoRepositoryImpl implements SearchedRepoRepository {
   RepositorySource repositorySource;
 
-  SearchRepoRepositoryImpl(this.repositorySource);
+  SearchedRepoRepositoryImpl(this.repositorySource);
 
   @override
   Future<Resource<SearchedRepoEntity>> getRepository(
@@ -24,7 +20,7 @@ class SearchRepoRepositoryImpl implements SearchRepoRepository {
         SearchedRepoEntity(
           name: repoEntity.owner.userName,
           repoName: repoEntity.name,
-          htmlUrl: repoEntity.html_url,
+          htmlUrl: repoEntity.url,
           owner: repoEntity.owner,
         ),
       ),

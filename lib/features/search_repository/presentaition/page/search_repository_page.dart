@@ -6,7 +6,6 @@ import 'package:github_browser/features/search_repository/data/source/search_rep
 import 'package:github_browser/features/search_repository/domain/usecase/search_reposirory_usecase.dart';
 import 'package:github_browser/features/search_repository/presentaition/bloc/bloc.dart';
 import 'package:github_browser/features/search_repository/presentaition/widgets/search_repository_widget.dart';
-import 'package:github_browser/features/searched_repository/domain/entities/searched_repo_entity.dart';
 import 'package:github_browser/features/searched_repository/presentation/page/searched_repository_page.dart';
 
 class SearchRepositoryPage extends StatelessWidget {
@@ -39,55 +38,6 @@ class SearchRepositoryPage extends StatelessWidget {
     );
   }
 
-  Widget _buildAllPending() {
-    return const Center(
-      child: CircularProgressIndicator(),
-    );
-  }
-
-  Widget _buildError(String error) {
-    return Center(
-      child: Text(error),
-    );
-  }
-
-/*
-  BlocBuilder<SearchRepositoryBloc, SearchRepositoryState> blocBuilder(
-      SearchRepositoryBloc bloc) {
-    return BlocBuilder<SearchRepositoryBloc, SearchRepositoryState>(
-      builder: (context, state) {
-        if (state is PendingState) {
-          return SearchRepositoryWidget(
-            onSearch: (value) {
-              List<String> searchParam = value as List<String>;
-              if (searchParam.isNotEmpty) {
-                bloc.searchRepository(searchParam.first, searchParam.last);
-              }
-            },
-          );
-        } else if (state is ErrorState) {
-          return _buildError(state.error.toString());
-        } else if (state is LoadedState) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => SearchedRepositoryPage(
-                searchedRepoEntity: SearchedRepoEntity(
-                  state.repositoryData.name,
-                  state.repositoryData.name,
-                  state.repositoryData.url,
-                  state.repositoryData.owner,
-                ),
-              ),
-            ),
-          );
-        }
-        return Container();
-      },
-    );
-  }
-*/
-
   BlocConsumer<SearchRepositoryBloc, SearchRepositoryState> blocConsumer(
       SearchRepositoryBloc bloc) {
     return BlocConsumer(
@@ -102,17 +52,13 @@ class SearchRepositoryPage extends StatelessWidget {
         );
       },
       listener: (context, state) {
-        if (state is LoadedState) {
+        if (state is SearchingState) {
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => SearchedRepositoryPage(
-                searchedRepoEntity: SearchedRepoEntity(
-                  state.repositoryData.name,
-                  state.repositoryData.name,
-                  state.repositoryData.url,
-                  state.repositoryData.owner,
-                ),
+                ownerName: state.searchParam.first,
+                repoName: state.searchParam.last,
               ),
             ),
           );

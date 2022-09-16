@@ -1,4 +1,5 @@
-import 'package:github_browser/features/searched_repository/domain/entities/branch_entity.dart';
+
+import '../../domain/entity/branch_entity.dart';
 
 class BranchModel extends BranchEntity {
   BranchModel({required String name}): super(name);

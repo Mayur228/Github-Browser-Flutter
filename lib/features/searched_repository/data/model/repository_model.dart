@@ -1,5 +1,3 @@
-import 'package:github_browser/features/search_repository/domain/entities/repository_entity.dart';
-
 class RepositoryModel {
   final String name;
   final String url;
