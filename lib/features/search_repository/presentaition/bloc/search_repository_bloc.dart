@@ -1,7 +1,9 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/features/search_repository/domain/usecase/search_reposirory_usecase.dart';
 import 'package:github_browser/features/search_repository/presentaition/bloc/bloc.dart';
+import 'package:injectable/injectable.dart';
 
+@injectable
 class SearchRepositoryBloc
     extends Bloc<SearchRepositoryEvent, SearchRepositoryState> {
   final SearchRepositoryUseCase searchRepositoryUseCase;

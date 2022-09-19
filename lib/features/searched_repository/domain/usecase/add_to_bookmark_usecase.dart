@@ -1,7 +1,9 @@
 import 'package:github_browser/features/homescreen/domain/entity/home_entity.dart';
 import 'package:github_browser/features/searched_repository/domain/entities/searched_repo_entity.dart';
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+@injectable
 class AddToBookmarkUseCase {
   AddToBookmarkUseCase();
 

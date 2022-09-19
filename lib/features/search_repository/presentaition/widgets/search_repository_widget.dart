@@ -3,8 +3,6 @@ import 'package:github_browser/features/search_repository/presentaition/widgets/
 import 'package:github_browser/features/search_repository/presentaition/widgets/text_field_widget.dart';
 
 class SearchRepositoryWidget extends StatelessWidget {
-  // final ValueChanged ownerName;
-  // final ValueChanged repositoryName;
   final ValueChanged onSearch;
 
   final Function(String owner, String repoName)? onSearch2;

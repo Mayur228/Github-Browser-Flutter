@@ -1,24 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:github_browser/features/search_repository/data/repository/search_repo_repository.dart';
-import 'package:github_browser/core/util/api_source.dart';
-import 'package:github_browser/features/search_repository/data/source/search_repository_source.dart';
-import 'package:github_browser/features/search_repository/domain/usecase/search_reposirory_usecase.dart';
 import 'package:github_browser/features/search_repository/presentaition/bloc/bloc.dart';
 import 'package:github_browser/features/search_repository/presentaition/widgets/search_repository_widget.dart';
 import 'package:github_browser/features/searched_repository/presentation/page/searched_repository_page.dart';
 
-import '../bloc/search_repository_state.dart';
+import '../../../../core/di/injection.dart';
+
 
 class SearchRepositoryPage extends StatelessWidget {
 
   final SearchRepositoryBloc _bloc;
 
-  SearchRepositoryPage({Key? key}) :  _bloc = SearchRepositoryBloc(
-    SearchRepositoryUseCase(
-      SearchRepoRepositoryImpl(SearchRepositorySource(ApiSource())),
-    ),
-  ), super(key: key);
+  SearchRepositoryPage({Key? key}) : _bloc = getIt<SearchRepositoryBloc>(), super(key: key);
 
   @override
   Widget build(BuildContext context) {

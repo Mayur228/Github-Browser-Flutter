@@ -1,11 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/features/branchscreen/presentation/bloc/branch_event.dart';
 import 'package:github_browser/features/branchscreen/presentation/bloc/branch_state.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/util/resource.dart';
 import '../../domain/entity/branch_entity.dart';
 import '../../domain/usecase/get_branch.dart';
 
+@injectable
 class BranchBloc extends Bloc<BranchEvent, BranchState> {
   final GetBranchUseCase branchUseCase;
 

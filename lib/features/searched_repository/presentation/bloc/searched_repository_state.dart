@@ -10,7 +10,9 @@ class PendingState extends SearchedRepositoryState {
 }
 
 class ErrorState extends SearchedRepositoryState {
+  final String error;
 
+  ErrorState(this.error);
 }
 
 class LoadedState extends SearchedRepositoryState {
@@ -30,5 +32,6 @@ class RedirectToBranchState extends SearchedRepositoryState {
 }
 
 class Bookmarked extends SearchedRepositoryState {
-  Bookmarked();
+  final SearchedRepoEntity repoData;
+  Bookmarked(this.repoData);
 }

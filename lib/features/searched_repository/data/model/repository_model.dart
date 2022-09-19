@@ -3,16 +3,19 @@ class RepositoryModel {
   final String url;
   final String html_url;
   final Owner owner;
+  final String? message;
 
   RepositoryModel(
       {required String name,
       required String url,
       required String html_url,
-      required Owner owner})
+      required Owner owner,
+      String? message})
       : name = name,
         url = url,
         html_url = html_url,
-        owner = owner;
+        owner = owner,
+        message = message;
 
   factory RepositoryModel.fromJson(Map<String, dynamic> json) {
     return RepositoryModel(

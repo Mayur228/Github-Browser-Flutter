@@ -1,7 +1,9 @@
+import 'package:injectable/injectable.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../entity/home_entity.dart';
 
+@injectable
 class GetBookmarkedUseCase {
   getSavedData() async {
     final prefs = await SharedPreferences.getInstance();

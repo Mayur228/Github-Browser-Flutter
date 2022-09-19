@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/features/question_list/domain/entity/question_answer_entity.dart';
 import 'package:github_browser/features/question_list/domain/entity/question_answer_view_entity.dart';

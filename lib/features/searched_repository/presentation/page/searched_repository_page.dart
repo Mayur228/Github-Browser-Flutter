@@ -1,14 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:github_browser/core/util/api_source.dart';
+import 'package:github_browser/core/di/injection.dart';
 import 'package:github_browser/features/branchscreen/presentation/page/branch_page.dart';
-import 'package:github_browser/features/branchscreen/data/repository/branch_repository.dart';
-import 'package:github_browser/features/searched_repository/data/repository/search_repo_repository.dart';
-import 'package:github_browser/features/searched_repository/data/source/repository_source.dart';
 import 'package:github_browser/features/searched_repository/domain/entities/searched_repo_entity.dart';
-import 'package:github_browser/features/searched_repository/domain/usecase/add_to_bookmark_usecase.dart';
-import 'package:github_browser/features/branchscreen/domain/usecase/get_branch.dart';
-import 'package:github_browser/features/searched_repository/domain/usecase/searching_repository_usecase.dart';
 import 'package:github_browser/features/searched_repository/presentation/bloc/bloc.dart';
 
 class SearchedRepositoryPage extends StatelessWidget {
@@ -32,13 +26,7 @@ class SearchedRepositoryPage extends StatelessWidget {
   }
 
   BlocProvider<SearchedRepositoryBloc> provider(BuildContext context) {
-    final bloc = SearchedRepositoryBloc(
-      useCase: GetBranchUseCase(BranchRepositoryImpl(ApiSource())),
-      addToBookmark: AddToBookmarkUseCase(),
-      searchedRepository: SearchedRepositoryUseCase(
-        SearchedRepoRepositoryImpl(RepositorySourceImpl(ApiSource())),
-      ),
-    );
+    final bloc = getIt<SearchedRepositoryBloc>();
 
     return BlocProvider(
       create: (_) => bloc,
@@ -54,18 +42,19 @@ class SearchedRepositoryPage extends StatelessWidget {
         if (state is PendingState) {
           return _buildAllPending();
         } else if (state is LoadedState) {
-          return userInterFace(bloc, state.repositoryData, Icons.bookmark_border);
+          return userInterFace(
+              bloc, state.repositoryData, Icons.bookmark_border);
         } else if (state is ErrorState) {
-          return _buildError('Error');
+          return _buildError(state.error);
         } else if (state is Bookmarked) {
-          return Container();
+          return userInterFace(bloc, state.repoData, Icons.bookmark);
         } else {
           return Container();
         }
       },
       listener: (context, state) {
         if (state is RedirectToBranchState) {
-           Navigator.push(
+          Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) => BranchPage(

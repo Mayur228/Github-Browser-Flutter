@@ -1,8 +1,10 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:github_browser/features/homescreen/domain/usecase/get_bookmarked_usecase.dart';
 import 'package:github_browser/features/homescreen/presentation/bloc/home_state.dart';
+import 'package:injectable/injectable.dart';
 import 'home_event.dart';
 
+@injectable
 class HomeBloc extends Bloc<HomeEvent, HomeState> {
   final GetBookmarkedUseCase bookmarkedUseCase;
   HomeBloc({required GetBookmarkedUseCase bookmarked})

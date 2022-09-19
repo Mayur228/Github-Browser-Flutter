@@ -34,4 +34,12 @@ class HomeEntity {
       (json.decode(homeEntity) as List<dynamic>)
           .map<HomeEntity>((item) => HomeEntity.fromJson(item))
           .toList();
+
+  @override
+  bool operator ==(Object other) {
+    return other is HomeEntity && other.userName == userName && other.userAvatar == userAvatar && other.repoName == repoName && other.htmlUrl == htmlUrl;
+  }
+
+  @override
+  int get hashCode => Object.hash(userName, userAvatar, repoName, htmlUrl);
 }

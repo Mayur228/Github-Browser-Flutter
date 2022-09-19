@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:github_browser/core/di/injection.dart';
 import 'package:github_browser/features/branchscreen/presentation/bloc/branch_bloc.dart';
 import 'package:github_browser/features/branchscreen/presentation/bloc/branch_state.dart';
 import 'package:github_browser/features/branchscreen/presentation/widget/list_widget.dart';
@@ -26,13 +27,7 @@ class BranchPage extends StatelessWidget {
   }
 
   BlocProvider<BranchBloc> provider(BuildContext context) {
-    final bloc = BranchBloc(
-      useCase: GetBranchUseCase(
-        BranchRepositoryImpl(
-          ApiSource(),
-        ),
-      ),
-    );
+    final bloc = getIt<BranchBloc>();
     bloc.getBranch(htmlUrl);
     return BlocProvider(
       create: (_) => bloc,

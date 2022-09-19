@@ -2,40 +2,25 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:github_browser/core/util/api_source.dart';
+import 'package:injectable/injectable.dart';
 
 import '../../../../core/util/resource.dart';
 import '../../../searched_repository/data/model/repository_model.dart';
 
- class SearchRepositorySource {
+abstract class SearchRepositorySource {
+  Future<RepositoryModel> getRepository(String ownerName, String repositoryName);
+}
+
+@Singleton(as: SearchRepositorySource)
+class SearchRepositorySourceImpl implements SearchRepositorySource {
   final ApiSource apiSource;
-  SearchRepositorySource(this.apiSource);
+  SearchRepositorySourceImpl(this.apiSource);
 
-  Future<Resource> getRepository(
-      String ownerName, String repositoryName) async {
-    try {
-      final response = await apiSource.init().get("repos/$ownerName/$repositoryName");
+  @override
+  Future<RepositoryModel> getRepository(
+      String ownerName, String repositoryName)  {
+    throw UnimplementedError();
 
-      return Future.value(
-        Resource.data(
-          RepositoryModel.fromJson(
-            json.decode(
-              response.toString(),
-            ),
-          ),
-        ),
-      );
-
-    } on DioError catch (e) {
-      if (e.response != null) {
-        return Future.value(
-          Resource.error(e.response?.statusMessage),
-        );
-      } else {
-        return Future.value(
-          Resource.error(e.message),
-        );
-      }
-    }
   }
 }
 
