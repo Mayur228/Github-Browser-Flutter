@@ -36,7 +36,6 @@ class HomePage extends StatelessWidget {
 
   BlocProvider<HomeBloc> provider(BuildContext context) {
     final bloc = getIt<HomeBloc>();
-    bloc.getBookMarked();
     return BlocProvider(
       create: (_) => bloc,
       child: blocConsumer(bloc),
@@ -44,11 +43,13 @@ class HomePage extends StatelessWidget {
   }
 
   BlocConsumer<HomeBloc, HomeState> blocConsumer(HomeBloc bloc) {
+    bloc.getBookMarked();
     return BlocConsumer(
       builder: (context, state) {
         if (state is NoDataState) {
           return Container();
         } else if (state is DataState) {
+          bloc.getBookMarked();
           return HomeWidget(list: state.list);
         } else {
           return Container();
